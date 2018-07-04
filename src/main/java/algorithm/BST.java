@@ -36,40 +36,45 @@ public class BST<K extends Comparable<K>, V> {
 	}
 
 
-	/**
-	 * @Description: 插入节点
-	 * @param key
-	 * @param value
-	 * @author wjc920
-	 * @date 2018年6月26日
-	 */
-	public void put(K key, V value) {
-		Node toPut=new Node(key, value);
-		Node cur=root;
-		if(root==null) {
-			root=new Node(key, value);
-			return;
-		}
-		while(true) {
-			int cmp=key.compareTo(cur.key);               
-			if (cmp < 0){
-				if(cur.left==null) {
-					cur.left=toPut;
-					break;
-				}
-				cur=cur.left;                             
-			}else if (cmp > 0) {  
-				if(cur.right==null) {
-					cur.right=toPut;
-					break;
-				}
-				cur=cur.right;                            
-			}else {                                             
-				cur.value=toPut.value;
+/**
+ * @Description: 插入节点
+ * @param key
+ * @param value
+ * @author wjc920
+ * @date 2018年6月26日
+ */
+public void put(K key, V value) {
+	Node toPut=new Node(key, value);
+	Node cur=root;
+	//在遍历树之前，先判断树是否为空，若空着执行插入，结束
+	if(root==null) {
+		root=toPut;
+		return;
+	}
+	while(true) {
+		int cmp=key.compareTo(cur.key);               
+		if (cmp < 0){
+			//如果代码执行到这里，下一步将对cur的左子树遍历，
+			//在遍历左子树之前先判断是否为空，若空着执行插入，结束
+			if(cur.left==null) {       
+				cur.left=toPut;
 				break;
 			}
+			cur=cur.left;                             
+		}else if (cmp > 0) {  
+			//如果代码执行到这里，下一步将对cur的右子树遍历，
+			//在遍历右子树之前先判断是否为空，若空着执行插入，结束
+			if(cur.right==null) {
+				cur.right=toPut;
+				break;
+			}
+			cur=cur.right;                            
+		}else {                                             
+			cur.value=toPut.value;
+			break;
 		}
 	}
+}
 
 	/**
 	 * @Description: 删除操作的非递归实现
@@ -143,28 +148,28 @@ public class BST<K extends Comparable<K>, V> {
 		return result;
 	}
 
-	/**
-	 * @Description: 获取键key的值
-	 * @param key
-	 * @return
-	 * @author wjc920
-	 * @date 2018年6月26日
-	 */
-	public V get(K key) {
-		return get(root, key).value;
-	}
+/**
+ * @Description: 获取键key的值
+ * @param key
+ * @return
+ * @author wjc920
+ * @date 2018年6月26日
+ */
+public V get(K key) {
+	return get(root, key).value;
+}
 
-	private Node get(Node node, K key) {
-		if (node == null)
-			return null;
-		int cmp = key.compareTo(node.key);
-		if (cmp < 0)
-			return get(node.left, key);
-		else if (cmp > 0)
-			return get(node.right, key);
-		else
-			return node;
-	}
+private Node get(Node node, K key) {
+	if (node == null)
+		return null;
+	int cmp = key.compareTo(node.key);
+	if (cmp < 0)
+		return get(node.left, key);
+	else if (cmp > 0)
+		return get(node.right, key);
+	else
+		return node;
+}
 
 
 
