@@ -1,5 +1,7 @@
 package algorithm;
 
+import java.util.Stack;
+
 /**
  * 红黑树
  * 
@@ -159,7 +161,13 @@ public class RBT<K extends Comparable<K>, V> {
 		setColor(root, BLACK);
 	}
 	
-	
+	/**
+	 * @Description: 删除节点
+	 * @param key
+	 * @return   
+	 * @author wjc920  
+	 * @date 2018年7月4日
+	 */
 	public V remove(K key) {
 		V resultV = null;
 		Node cur = get(root, key);
@@ -208,6 +216,14 @@ public class RBT<K extends Comparable<K>, V> {
 		return resultV;
 	}
 	
+
+	/**
+	 * @Description: 查找节点
+	 * @param key
+	 * @return   
+	 * @author wjc920  
+	 * @date 2018年7月4日
+	 */
 	public V get(K key) {
 		Node target = get(root, key);
 		if (target != null)
@@ -229,67 +245,79 @@ public class RBT<K extends Comparable<K>, V> {
 		return cur;
 	}
 	
-	
-private void balanceAfterRemove(Node x) {
-	Node papa,sib;
-	while(x!=null&&x!=root&&!isRed(x)) {
-		papa=parentOf(x);
-		if(leftOf(papa)==x) {
-			sib=rightOf(papa);
-			if(isRed(sib)) {
-				setColor(papa, RED);
-				setColor(sib, BLACK);
-				rotateLeft(papa);
-				papa=parentOf(x);
-				sib=rightOf(papa);
-			}
-			if(!isRed(leftOf(sib))&&!isRed(rightOf(sib))) {
-				setColor(sib, RED);
-				x=papa;
-			}else {
-				if(isRed(leftOf(sib))) {
+	/**
+	 * @Description: 删除后的平衡处理
+	 * @param x   
+	 * @author wjc920  
+	 * @date 2018年7月4日
+	 */
+	private void balanceAfterRemove(Node x) {
+		Node papa, sib;
+		while (x != null && x != root && !isRed(x)) {
+			papa = parentOf(x);
+			if (leftOf(papa) == x) {
+				sib = rightOf(papa);
+				if (isRed(sib)) {   //对应删除节点图片的第三排
+					setColor(papa, RED);
+					setColor(sib, BLACK);
+					rotateLeft(papa);
+					papa = parentOf(x);
+					sib = rightOf(papa);
+				}
+				if (!isRed(leftOf(sib)) && !isRed(rightOf(sib))) {//对应删除节点图片的第五排
+					setColor(sib, RED);
+					x = papa;
+				} else {
+					if (isRed(leftOf(sib))) {//对应删除节点图片的第二排
+						setColor(leftOf(sib), BLACK);
+						setColor(sib, RED);
+						rotateRight(sib);
+						sib = rightOf(papa);
+					}
+					setColor(rightOf(sib), BLACK);//对应删除节点图片的第四排
+					setColor(sib, isRed(papa));
+					setColor(papa, BLACK);
+					rotateLeft(papa);
+					x = root;
+				}
+			} else {
+				sib = leftOf(papa);
+				if (isRed(sib)) {
+					setColor(papa, RED);
+					setColor(sib, BLACK);
+					rotateRight(papa);
+					papa = parentOf(x);
+					sib = leftOf(papa);
+				}
+				if (!isRed(leftOf(sib)) && !isRed(rightOf(sib))) {
+					setColor(sib, RED);
+					x = papa;
+				} else {
+					if (isRed(rightOf(sib))) {
+						setColor(rightOf(sib), BLACK);
+						setColor(sib, RED);
+						rotateLeft(sib);
+						sib = leftOf(papa);
+					}
 					setColor(leftOf(sib), BLACK);
-					setColor(sib, RED);
-					rotateRight(sib);
-					sib=rightOf(papa);
+					setColor(sib, isRed(papa));
+					setColor(papa, BLACK);
+					rotateRight(papa);
+					x = root;
+
 				}
-				setColor(rightOf(sib), BLACK);
-				setColor(sib, isRed(papa));
-				setColor(papa, BLACK);
-				rotateLeft(papa);
-				x=root;
-			}
-		}else {
-			sib=leftOf(papa);
-			if(isRed(sib)) {
-				setColor(papa, RED);
-				setColor(sib, BLACK);
-				rotateRight(papa);
-				papa=parentOf(x);
-				sib=leftOf(papa);
-			}
-			if(!isRed(leftOf(sib))&&!isRed(rightOf(sib))) {
-				setColor(sib, RED);
-				x=papa;
-			}else {
-				if(isRed(rightOf(sib))) {
-					setColor(rightOf(sib), BLACK);
-					setColor(sib, RED);
-					rotateLeft(sib);
-					sib=leftOf(papa);
-				}
-				setColor(leftOf(sib), BLACK);
-				setColor(sib, isRed(papa));
-				setColor(papa, BLACK);
-				rotateRight(papa);
-				x=root;
-				
 			}
 		}
+		setColor(x, BLACK);
 	}
-	setColor(x, BLACK);
-}
 	
+
+	/**
+	 * @Description: 左旋
+	 * @param x   
+	 * @author wjc920  
+	 * @date 2018年7月4日
+	 */
 	private void rotateLeft(Node x) {
 		if(x!=null&&x.right!=null) {
 			Node right=x.right,papa=x.parent;
@@ -312,6 +340,12 @@ private void balanceAfterRemove(Node x) {
 		
 	}
 	
+	/**
+	 * @Description: 右旋
+	 * @param x   
+	 * @author wjc920  
+	 * @date 2018年7月4日
+	 */
 	private void rotateRight(Node x) {
 		if(x!=null&&x.left!=null) {
 			Node left=x.left,papa=x.parent;
@@ -363,6 +397,13 @@ private void balanceAfterRemove(Node x) {
 	}
 
 	
+	/**
+	 * @Description: 寻找后继节点
+	 * @param x
+	 * @return   
+	 * @author wjc920  
+	 * @date 2018年7月4日
+	 */
 	private Node nextNodeForBinTree(Node x) {
 		if(x==null)
 			return null;
@@ -382,16 +423,62 @@ private void balanceAfterRemove(Node x) {
 		}
 	}
 	
-	public static void main(String[] args) {
-		RBT<Integer, Integer> rbt=new RBT<>();
-		int[] elements = new int[] { 6, 2, 1,0, 4, 3, 9, 7, 8, 5, 10, 17 };
-		for (int i : elements) {
-			rbt.put(i, i);
+	/**
+	 * @Description: 遍历树，并判断每个节点是否符合红黑树的要求
+	 * @return   
+	 * @author wjc920  
+	 * @date 2018年7月4日
+	 */
+	public boolean isRBT() {
+		Stack<Node> s = new Stack<>();
+		if (root != null)
+			s.push(root);
+		while (!s.isEmpty()) {
+			Node tmp = s.peek();
+			while (tmp.left != null) {
+				s.push(tmp.left);
+				tmp = tmp.left;
+			}
+			while (!s.empty()) {
+				tmp = s.pop();
+				if(!isRBTNode(tmp))
+					return false;
+				if (tmp.right != null) {
+					s.push(tmp.right);
+					break;
+				}
+			}
 		}
-//		System.out.println(rbt.toString());
-		rbt.remove(3);
-		System.out.println(rbt.toString());
-		
+		return true;
+
+	}
+	
+	/**
+	 * @Description: 判断节点是否符合红黑树标准
+	 * 1.x.key>x.left.key
+	 * 2.x.key<x.right.key
+	 * 3.if x.red==true,then x.left.red!=true and x.right.red!=null
+	 * @param x
+	 * @return   
+	 * @author wjc920  
+	 * @date 2018年7月4日
+	 */
+	private boolean isRBTNode(Node x) {
+		if (isRed(x)) {
+			if (isRed(x.left) || isRed(x.right)) {
+				return false;
+			}
+		}
+		int p1 = 1, p2 = -1;
+		if (x.left != null)
+			p1 = x.key.compareTo(x.left.key);
+		if (x.right != null)
+			p2 = x.key.compareTo(x.right.key);
+
+		if (p1 < 0 || p2 > 0) {
+			return false;
+		}
+		return true;
 	}
 	
 	
