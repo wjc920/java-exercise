@@ -252,59 +252,59 @@ public class RBT<K extends Comparable<K>, V> {
 	 * @date 2018年7月4日
 	 */
 	private void balanceAfterRemove(Node x) {
-		Node papa, sib;
-		while (x != null && x != root && !isRed(x)) {
-			papa = parentOf(x);
-			if (leftOf(papa) == x) {
-				sib = rightOf(papa);
-				if (isRed(sib)) {   //对应删除节点图片的第三排
+		Node papa,sib;
+		while(x!=null&&x!=root&&!isRed(x)) {
+			papa=parentOf(x);
+			if(leftOf(papa)==x) {
+				sib=rightOf(papa);
+				if(isRed(sib)) {
 					setColor(papa, RED);
 					setColor(sib, BLACK);
 					rotateLeft(papa);
-					papa = parentOf(x);
-					sib = rightOf(papa);
+					papa=parentOf(x);
+					sib=rightOf(papa);
 				}
-				if (!isRed(leftOf(sib)) && !isRed(rightOf(sib))) {//对应删除节点图片的第五排
+				if(!isRed(leftOf(sib))&&!isRed(rightOf(sib))) {
 					setColor(sib, RED);
-					x = papa;
-				} else {
-					if (isRed(leftOf(sib))) {//对应删除节点图片的第二排
+					x=papa;
+				}else {
+					if(isRed(leftOf(sib))) {
 						setColor(leftOf(sib), BLACK);
 						setColor(sib, RED);
 						rotateRight(sib);
-						sib = rightOf(papa);
+						sib=rightOf(papa);
 					}
-					setColor(rightOf(sib), BLACK);//对应删除节点图片的第四排
+					setColor(rightOf(sib), BLACK);
 					setColor(sib, isRed(papa));
 					setColor(papa, BLACK);
 					rotateLeft(papa);
-					x = root;
+
+					x=root;
 				}
-			} else {
-				sib = leftOf(papa);
-				if (isRed(sib)) {
+			}else {
+				sib=leftOf(papa);
+				if(isRed(sib)) {
 					setColor(papa, RED);
 					setColor(sib, BLACK);
 					rotateRight(papa);
-					papa = parentOf(x);
-					sib = leftOf(papa);
+					papa=parentOf(x);
+					sib=leftOf(papa);
 				}
-				if (!isRed(leftOf(sib)) && !isRed(rightOf(sib))) {
+				if(!isRed(leftOf(sib))&&!isRed(rightOf(sib))) {
 					setColor(sib, RED);
-					x = papa;
-				} else {
-					if (isRed(rightOf(sib))) {
+					x=papa;
+				}else {
+					if(isRed(rightOf(sib))) {
 						setColor(rightOf(sib), BLACK);
 						setColor(sib, RED);
 						rotateLeft(sib);
-						sib = leftOf(papa);
+						sib=leftOf(papa);
 					}
 					setColor(leftOf(sib), BLACK);
 					setColor(sib, isRed(papa));
 					setColor(papa, BLACK);
 					rotateRight(papa);
-					x = root;
-
+					x=root;
 				}
 			}
 		}
