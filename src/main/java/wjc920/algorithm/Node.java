@@ -1,4 +1,4 @@
-package algorithm;
+package wjc920.algorithm;
 
 public class Node<T> {
 	public T t;

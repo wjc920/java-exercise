@@ -1,4 +1,4 @@
-package algorithm;
+package wjc920.algorithm;
 
 /**
  * 二叉查找树（binary search tree）

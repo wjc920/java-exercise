@@ -1,4 +1,4 @@
-package algorithm;
+package wjc920.algorithm;
 
 import java.util.Stack;
 

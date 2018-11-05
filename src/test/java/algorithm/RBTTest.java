@@ -4,6 +4,8 @@ import java.util.Random;
 
 import org.junit.Test;
 
+import wjc920.algorithm.RBT;
+
 public class RBTTest {
 	
 	private RBT<Integer, Integer> rbt=new RBT<>();
