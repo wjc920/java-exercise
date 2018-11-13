@@ -4,7 +4,7 @@ import java.util.Random;
 
 import org.junit.Test;
 
-import wjc920.algorithm.RBT;
+import wjc920.java.basic.algorithm.RBT;
 
 public class RBTTest {
 	
